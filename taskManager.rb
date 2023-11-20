@@ -93,12 +93,27 @@ class TaskList
   end
 end
 
+############################################# RANDOM FUNCTIONS #############################################
+# Count to 10
+def thread_func
+  (1..10).each { |i| # same as for (i = 0; i < 10 ; i++)
+    puts "#{i}"
+    sleep(1)
+  }
+end
+
+def kick_off_threads
+  puts "Starting Thread"
+  t1 = Thread.new{thread_func} # executes the code provided in the block {}. Here, we are just calling thread_func
+  # t1.join #TODO: uncomment. "join" waits for thread to finish
+end
+
 ############################################# TASK MANAGER EXECUTION #############################################
 task_list = TaskList.new # instantiate object. If constructor has no parameters, then can call "new" without parentheses
 puts "Welcome to the Ruby Task Manager!" # "puts" automatically creates newline
 
 while true
-  print "\nPlease enter a desired action:\n\tprint\n\tadd\n\tsearch\n\tupdate\n\tcomplete\n\tshow_incomplete\n\tremove\nDesired action: " # "print" doesn't create newline
+  print "\nPlease enter a desired action:\n\tprint\n\tadd\n\tsearch\n\tupdate\n\tcomplete\n\tshow_incomplete\n\tremove\n\tthread\nDesired action: " # "print" doesn't create newline
   choice = gets.chomp
 
   case choice
@@ -153,6 +168,10 @@ while true
     task_list.remove_task(idx)
 
     puts "\n#{task_list.get_task(idx).title} has been removed"
+
+  when "thread"
+    kick_off_threads
+
   else
     puts "Invalid action"
   end
