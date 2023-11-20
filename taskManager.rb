@@ -63,6 +63,10 @@ class TaskList
     gets.chomp.to_i - 1 # read input (gets), remove newline char (chomp), convert to integer (to_i), subtract 1 for correct index. Again, no return keyword
   end
 
+  def get_task(idx)
+    @task_list[idx]
+  end
+
   def add_task(task)
     @task_list << task # << is the append operator. Can be used for arrays or strings
   end
@@ -127,7 +131,7 @@ while true
     print "Field: "
     field = gets.chomp
 
-    print "New Content: "
+    print "New #{field}: "
     updated_content = gets.chomp
 
     task_list.update_task(idx, field, updated_content)
@@ -136,7 +140,7 @@ while true
 
   when "complete"
     idx = task_list.ask_for_task
-    task = task_list.task_list[idx]
+    task = task_list.get_task(idx)
 
     task.mark_complete
     puts "\n#{task.title} has been marked complete"
@@ -148,7 +152,7 @@ while true
     idx = task_list.ask_for_task
     task_list.remove_task(idx)
 
-    puts "\n#{task_list.task_list[idx].title} has been removed"
+    puts "\n#{task_list.get_task(idx).title} has been removed"
   else
     puts "Invalid action"
   end
