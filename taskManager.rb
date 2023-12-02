@@ -3,7 +3,7 @@ class Task
   # object attributes. "attr_accessor" creates an instance variable AND corresponding access method to read it
   attr_accessor :title, :description, :completed
 
-  # Constructor
+  # Constructor. Overrides BasicObject method
   def initialize(title, description)
     @title = title
     @description = description
@@ -48,15 +48,16 @@ class TaskList
   end
 
   def print_incomplete_tasks
-    @task_list.each do |task| # Like a forEach
+    @task_list.each_with_index do |task, idx| # Like a forEach
       unless task.completed # "unless" similar to a guard in Swift. Like an "if not ..."
-        puts "#{task.to_string}"
+        puts "#{idx+1}. #{task.to_string}"
       end
     end
   end
 
   # rather than having user type in a task, they will choose the task from their task list, hence this method
-  def ask_for_task
+  def ask_for_task(action)
+    puts "\nSelect task to #{action}:"
     print_all_tasks
 
     print "Task Number [Between 1 and #{@task_list.length}]: "
@@ -104,8 +105,16 @@ end
 
 def kick_off_threads
   puts "Starting Thread"
-  t1 = Thread.new{thread_func} # executes the code provided in the block {}. Here, we are just calling thread_func
-  # t1.join #TODO: uncomment. "join" waits for thread to finish
+  thread = Thread.new{thread_func} # executes the code provided in the block {}. Here, we are just calling thread_func
+  # thread.join #TODO: uncomment. "join" waits for thread to finish
+end
+
+def factorial(num)
+  if num == 0 || num == 1
+    1
+  else
+    num * factorial(num - 1)
+  end
 end
 
 ############################################# TASK MANAGER EXECUTION #############################################
@@ -113,15 +122,16 @@ task_list = TaskList.new # instantiate object. If constructor has no parameters,
 puts "Welcome to the Ruby Task Manager!" # "puts" automatically creates newline
 
 while true
-  print "\nPlease enter a desired action:\n\tprint\n\tadd\n\tsearch\n\tupdate\n\tcomplete\n\tshow_incomplete\n\tremove\n\tthread\nDesired action: " # "print" doesn't create newline
+  print "\nPlease enter a desired action:\n\tprint\n\tadd\n\tsearch\n\tupdate\n\tcomplete_task\n\tshow_incomplete\n\tremove\n\tthread\n\tfactorial\nDesired action: " # "print" doesn't create newline
   choice = gets.chomp
 
   case choice
   when "print"
+    puts "\nTask List:"
     task_list.print_all_tasks
 
   when "add"
-    puts "Please answer the following prompts:"
+    puts "\nPlease answer the following prompts:"
     print "\tTask title: "
     title = gets.chomp
 
@@ -134,44 +144,64 @@ while true
     puts "\nSuccessfully added task"
 
   when "search"
-    print "Task to search: "
+    print "\nTask to search: "
     title = gets.chomp
 
     TaskList.search_task(task_list.task_list, title, 0) # static method call
 
   when "update"
-    idx = task_list.ask_for_task
+    idx = task_list.ask_for_task("update")
 
-    puts "Please select a field to update:\n\ttitle\n\tdescription"
-    print "Field: "
+    puts "\nPlease select a field to update:\n\ttitle\n\tdescription"
+    print "Field to update: "
     field = gets.chomp
 
-    print "New #{field}: "
+    print "\nNew #{field}: "
     updated_content = gets.chomp
 
     task_list.update_task(idx, field, updated_content)
 
     puts "\nSuccessfully updated task"
 
-  when "complete"
-    idx = task_list.ask_for_task
+  when "complete_task"
+    idx = task_list.ask_for_task("complete")
     task = task_list.get_task(idx)
 
     task.mark_complete
-    puts "\n#{task.title} has been marked complete"
+    puts "\n'#{task.title}' has been marked complete"
 
   when "show_incomplete"
+    puts "\nIncomplete tasks:"
     task_list.print_incomplete_tasks
 
   when "remove"
-    idx = task_list.ask_for_task
+    idx = task_list.ask_for_task("remove")
+    task = task_list.get_task(idx)
+
     task_list.remove_task(idx)
 
-    puts "\n#{task_list.get_task(idx).title} has been removed"
+    puts "\n'#{task.title}' has been removed"
 
   when "thread"
     kick_off_threads
 
+  when "factorial"
+    # calculate 30! 100 times and record the time it takes in milliseconds. Do this 10 times to find average
+    sum, result = 0, 0
+    (1..10).each do
+      start_time = Time.now
+
+      (1..100).each do
+        result = factorial(30)
+      end
+
+      end_time = Time.now
+      sum += end_time - start_time
+    end
+    avg_execution_time = sum / 10
+
+    puts "\nFactorial result: #{result}"
+    puts "Average execution time: #{avg_execution_time * 1000} milliseconds"
   else
     puts "Invalid action"
   end
