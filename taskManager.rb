@@ -8,7 +8,7 @@ class Task
     @title = title
     @description = description
     @completed = false
-  end # "end" keyword used to determine end of block. No colons or curly braces, just "end"
+  end # "end" keyword used to determine end of block. No colons or curly braces needed, just "end"
 
   # demonstrates switch-case (case-when)
   def update(field_to_update, updated_content)
@@ -48,7 +48,7 @@ class TaskList
   end
 
   def print_incomplete_tasks
-    @task_list.each_with_index do |task, idx| # Like a forEach
+    @task_list.each_with_index do |task, idx|
       unless task.completed # "unless" similar to a guard in Swift. Like an "if not ..."
         puts "#{idx+1}. #{task.to_string}"
       end
@@ -60,7 +60,7 @@ class TaskList
     puts "\nSelect task to #{action}:"
     print_all_tasks
 
-    print "Task Number [Between 1 and #{@task_list.length}]: "
+    print "Task Number [Between 1 and #{@task_list.length}]: " # arrays have built in length property, like in most languages
     gets.chomp.to_i - 1 # read input (gets), remove newline char (chomp), convert to integer (to_i), subtract 1 for correct index. Again, no return keyword
   end
 
@@ -141,7 +141,7 @@ while true
     task = Task.new(title, description)
     task_list.add_task(task)
 
-    puts "\nSuccessfully added task"
+    puts "\nSuccessfully added task '#{task.title}'"
 
   when "search"
     print "\nTask to search: "
@@ -186,7 +186,7 @@ while true
     kick_off_threads
 
   when "factorial"
-    # calculate every number from 1 to 20, 10! times. Repeat this 10 times to find the average
+    # calculate the factorial of every number from 1 to 20, 10! times. Repeat this 10 times to find the average
     sum, result = 0, 0
     (1..10).each do
       start_time = Time.now
