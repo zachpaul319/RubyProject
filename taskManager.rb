@@ -188,10 +188,10 @@ while true
   when "factorial"
     # calculate the factorial of every number from 1 to 20, 10! times. Repeat this 10 times to find the average
     sum, result = 0, 0
-    (1..10).each do
+    10.times do
       start_time = Time.now
 
-      (1..3628800).each do
+      3628800.times do
         (1..20).each do |i|
           result = factorial(i)
         end
