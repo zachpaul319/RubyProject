@@ -186,13 +186,15 @@ while true
     kick_off_threads
 
   when "factorial"
-    # calculate 30! 100 times and record the time it takes in milliseconds. Do this 10 times to find average
+    # calculate every number from 1 to 20, 10! times. Repeat this 10 times to find the average
     sum, result = 0, 0
     (1..10).each do
       start_time = Time.now
 
-      (1..100).each do
-        result = factorial(30)
+      (1..3628800).each do
+        (1..20).each do |i|
+          result = factorial(i)
+        end
       end
 
       end_time = Time.now

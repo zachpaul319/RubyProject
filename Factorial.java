@@ -1,22 +1,27 @@
-class Factorial{
-    public static void main(String[] args){
-        long avg = 0;
-        int itr = 10;
-        for(int i=0; i< itr; i++){
-            long startTime = System.nanoTime();
-                for(int j=0; j< 10000; j++){
-                    factorial(j);
-                }
-            long elapsedTime = System.nanoTime() - startTime;
-            System.out.println("Execution time in ms: "
-                + elapsedTime/1000000);
-            avg += elapsedTime;
-        }
-        avg = avg/itr;
+class Factorial {
+    public static void main(String[] args) {
+        long sum = 0;
+        long result = 0;
 
-        System.out.println("Avg execution time in ms: "
-                + avg/1000000);
+        for (int i = 0; i < 10; i++) {
+            long startTime = System.currentTimeMillis();
+
+            for (long j = 0; j < 3628800; j++) {
+                for (int k = 1; k <= 20; k++) {
+                    result = factorial(k);
+                }
+            }
+
+            long endTime = System.currentTimeMillis();
+            sum += endTime - startTime;
+        }
+
+        long avgExecutionTime = sum / 10;
+
+        System.out.println("Factorial result: " + result);
+        System.out.println("Average execution time: " + avgExecutionTime + " milliseconds");
     }
+
     private static long factorial(int n) {
         if (n == 0 || n == 1) {
             return 1;
